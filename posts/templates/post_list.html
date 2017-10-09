@@ -1,19 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-	<meta charset="UTF-8">
-	<title>Post List </title>
-</head>
+{% block title %}
+	List
+{% endblock title %}
 
-<body>
+{% block content %}
 	<h1>The Poknst {{title}} Page</h1>
 	{% for object in object_list %}
-		<a href="{{object.get_absolute_url}}">{{object.title}}</a>
+		<a href="{{object.get_absolute_url}}">{{object.title}}</a><br>
 		{{object.content}}<br>
 		{{object.timestamp}}<br>
 		{{object.updated}}<br>
 		{{object.id}}<br>
+		<input type="submit" value="Delete Post"><br>
 	{% endfor %}
-</body>
-</html>
+{% endblock content %}
