@@ -7,9 +7,9 @@
 </head>
 
 <body>
-	<h1>The Post {{title}} Page</h1>
+	<h1>The Poknst {{title}} Page</h1>
 	{% for object in object_list %}
-		{{object.title}}<br>
+		<a href="{{object.get_absolute_url}}">{{object.title}}</a>
 		{{object.content}}<br>
 		{{object.timestamp}}<br>
 		{{object.updated}}<br>
