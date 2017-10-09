@@ -1,14 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import Post
+from .forms import PostForm
 
 # Create your views here.
 def post_create(request):
+	form = PostForm(request.POST or None)
+	if form.is_valid():
+		form.save()
+		return redirect("posts:list")
 	context = {
-	'title': 'Create'
+	'title': 'Create',
+	'form': form,
 	}
 	return render(request, 'post_create.html', context)
 
