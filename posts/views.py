@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Post
 from .forms import PostForm
@@ -31,10 +32,18 @@ def post_detail(request, post_id):
 
 def post_list(request):
 	object_list = Post.objects.all()
+	paginator = Paginator(object_list, 5)
+	page = request.GET.get('page')
+	try:
+		objects = paginator.page(page)
+	except PageNotAnInteger:
+		objects = paginator.page(1)
+	except EmptyPage:
+		objects = paginator.page(paginator.num_pages)
 	context = {
 	'title': 'List',
 	'user': request.user,
-	'object_list': object_list
+	'object_list': objects
 	}	
 	return render(request, 'post_list.html', context)
 
