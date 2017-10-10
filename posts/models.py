@@ -5,6 +5,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models.signals import pre_save
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
@@ -17,7 +18,7 @@ class Post(models.Model):
 	updated = models.DateTimeField(auto_now=True, auto_now_add=False)
 	timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
 	draft = models.BooleanField(default=False)
-	publish = models.DateTimeField(auto_now=False, auto_now_add=False)
+	publish = models.DateField(auto_now=False, auto_now_add=False)
 	updated = models.DateTimeField(auto_now=True, auto_now_add=False)
 
 	def __str__(self):
@@ -45,4 +46,9 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
 		instance.slug=create_slug(instance)
 
 pre_save.connect(pre_save_post_receiver, sender=Post)
+
+class Like(models.Model):
+	user = models.ForeignKey(User)
+	post = models.ForeignKey(Post)
+	created = models.DateTimeField(auto_now_add=True)
 

@@ -1,0 +1,20 @@
+{% load comments %}
+{% get_comment_list for instance as comments %}
+
+{% for comment in comments %}
+    <div class="alert alert-info" role="alert"><b>{{ comment.user_name }} said:</b> {{ comment.comment|linebreaks}}</div>
+{% endfor %}
+
+{% get_comment_form for instance as form %}
+<form action="{% comment_form_target %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="name" value="{{ request.user.username }}">
+    <input type="hidden" name="email" value="{{ request.user.email }}">
+    <input type="text" class="form-control input-lg" name="comment">
+    {{ form.content_type }}
+    {{ form.object_pk }}
+    {{ form.timestamp }}
+    {{ form.security_hash }}
+    <input type="hidden" name="next" value="{{instance.get_absolute_url}}">
+    <input type="submit" name="submit" class="btn btn-primary">
+</form>
