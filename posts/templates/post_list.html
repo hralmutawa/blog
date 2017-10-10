@@ -1,17 +1,24 @@
 {% extends "base.html" %}
 
 {% block title %}
-	List
+{{title}}
 {% endblock title %}
 
 {% block content %}
-	<h1>The Poknst {{title}} Page</h1>
-	{% for object in object_list %}
-		<a href="{{object.get_absolute_url}}">{{object.title}}</a><br>
-		{{object.content}}<br>
-		{{object.timestamp}}<br>
-		{{object.updated}}<br>
-		{{object.id}}<br>
-		<input type="submit" value="Delete Post"><br>
-	{% endfor %}
+    <h1>{{title}}</h1>
+    <div class="row">
+    {% for object in object_list %}
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="thumbnail">
+                <!--<img src="..." alt="...">-->
+                <div class="caption">
+                    <h3><a href="{{ object.get_absolute_url }}">{{object.title}}</a><small> {{object.timestamp|timesince }} ago</small></h3>
+                    <p>{{object.content|linebreaks|truncatechars:100}}</p>
+                    <p><a href="{{ object.get_absolute_url }}" class="btn btn-primary" role="button">View</a></p>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+    </div>
 {% endblock content %}
