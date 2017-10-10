@@ -11,6 +11,14 @@
 		<img src ="{{instance.image.url}}" alt="" class="img-responsive">
 		{% endif %}
 	<h1>{{instance.title}} <small>{{instance.timestamp}}</small></h1> {{instance.content | linebreaks}}
+
+	        <a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">
+        Share on Facebook
+        </a>
+
+        <a href="https://twitter.com/home?status={{share_string}}%20{{request.build_absolute_uri}}">
+    Share on Twitter
+</a>
 	</div>
 </div>
 {% endblock content %}

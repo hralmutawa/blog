@@ -2,15 +2,18 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from urllib import quote
 
 from .models import Post
 from .forms import PostForm
 
 # Create your views here.
 def post_create(request):
+	if not (request.user.is_staff or request.user.is_superuser):
+		raise Http404
 	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
 		form.save()
@@ -23,10 +26,11 @@ def post_create(request):
 	return render(request, 'post_create.html', context)
 
 def post_detail(request, post_slug):
-	instance = get_object_or_404(Post, id=post_id)
+	instance = get_object_or_404(Post, id=post_slug)
 	context = {
 	'title': 'Detail',
-	'instance': instance
+	'instance': instance,
+	'share_string': quote(instance.content)
 	}
 	return render(request, 'post_detail.html', context)
 
@@ -48,7 +52,9 @@ def post_list(request):
 	return render(request, 'post_list.html', context)
 
 def post_update(request, post_slug):
-	instance = get_object_or_404(Post, id=post_id)
+	if not (request.user.is_staff or request.user.is_superuser):
+		raise Http404
+	instance = get_object_or_404(Post, id=post_slug)
 	form = PostForm(request.POST or None, request.FILES or none, instance=instance)
 	if form.is_valid():
 		form.save()
@@ -62,7 +68,9 @@ def post_update(request, post_slug):
 	return render(request, 'post_update.html', context)
 
 def post_delete(request, post_slug):
-	instance = get_object_or_404(Post, id=post_id)
+	if(request.user.is_staff or request.user.is_superuser):
+		raise Http404
+	instance = get_object_or_404(Post, id=post_slug)
 	instance.delete()
 	messages.success(request, "Successfully Deleted!")
 	return redirect("posts:list")
