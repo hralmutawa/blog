@@ -14,7 +14,7 @@
             	<img src ="{{instance.image.url}}" alt="" class="img-responsive">
             	{% endif %}
                 <div class="caption">
-                    <h3><a href="{{ object.get_absolute_url }}">{{object.title}}</a><small> {{object.timestamp|timesince }} ago</small></h3>
+                    <h3><a href="{{ object.get_absolute_url }}">{{object.title}}</a><small> {{object.publish|timesince }} ago</small></h3>
                     <p>{{object.content|linebreaks|truncatechars:100}}</p>
                     <p><a href="{{ object.get_absolute_url }}" class="btn btn-primary" role="button">View</a></p>
                 </div>

@@ -10,7 +10,7 @@
 		{% if instance.image %}
 		<img src ="{{instance.image.url}}" alt="" class="img-responsive">
 		{% endif %}
-	<h1>{{instance.title}} <small>{{instance.timestamp}}</small></h1> {{instance.content | linebreaks}} <br>
+	<h1>{{instance.title}} <small>{{instance.publish}}</small></h1> {{instance.content | linebreaks}} <br>
 
 	Author: {{instance.author.get_full_name}}<br>
 
